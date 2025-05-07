@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/Adelfia/dev-sw.js?dev-sw', { scope: '/Adelfia/', type: 'classic' })
