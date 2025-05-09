@@ -3,7 +3,7 @@ import Button from "@components/Button";
 import { useNavigate } from "react-router";
 
 const Timer = ({ startTime, setStartTime }) => {
-  const [timer, setTimer] = useState(1 * 60); // 10 minuti
+  const [timer, setTimer] = useState(10 * 60); // 10 minuti
   const navigate = useNavigate();
 const [animate, setAnimate] = useState(false);
 
