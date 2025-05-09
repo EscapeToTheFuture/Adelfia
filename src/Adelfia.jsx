@@ -7,9 +7,12 @@ import GameOver from "./scenes/GameOver";
 import SplashScreen from "./scenes/SplashScreen";
 
 import Scena1 from "./scenes/Scena1";
+import Scena2 from "./scenes/Scena2";
+import Timer from "@components/Timer";
 
 const Bitritto = () => {
   const [isPortrait, setIsPortrait] = useState(window.matchMedia("(orientation: portrait)").matches);
+  const [installation, setInstallation] = useState(false);
 
   useEffect(() => {
     const handleOrientationChange = () => {
@@ -25,6 +28,7 @@ const Bitritto = () => {
 
   // Installa PWA
   useEffect(() => {
+    if (installation) return; // Se l'app è già installata, non fare nulla
     let deferredPrompt;
 
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -43,6 +47,7 @@ const Bitritto = () => {
                 console.log("Utente ha rifiutato l'installazione");
               }
               deferredPrompt = null;
+              setInstallation(true);
             });
         }
       }, 1000);
@@ -51,20 +56,23 @@ const Bitritto = () => {
     return () => {
       window.removeEventListener('beforeinstallprompt', () => {});
     };
-  }, []);
+  }, [installation]);
 
 
+  const [startTime, setStartTime] = useState(false);
+ 
   return (
     <>
       {isPortrait ? (
         <RotatePhone />
       ) : (
         <HashRouter>
+          {startTime && <Timer startTime={startTime} setStartTime={setStartTime}/>}
           <Routes>
             <Route path="/" element={<SplashScreen location={'Adelfia'} title={'La faida tra Montrone e Canneto'} />} />
-            <Route path="/scena1" element={<Scena1/>} />
-            {/* <Route path="/scena2" element={<Scena2/>} />
-            <Route path="/scena3" element={<Scena3/>} />
+            <Route path="/scena1" element={<Scena1 setTimer={setStartTime}/>} />
+            <Route path="/scena2" element={<Scena2/>} />
+            {/* <Route path="/scena3" element={<Scena3/>} />
             <Route path="/scena4" element={<Scena4/>} />
             <Route path="/scena5" element={<Scena5/>} />
             <Route path="/scena6" element={<Scena6/>} />
