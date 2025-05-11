@@ -9,6 +9,8 @@ import SplashScreen from "./scenes/SplashScreen";
 import Scena1 from "./scenes/Scena1";
 import Scena2 from "./scenes/Scena2";
 import Scena3 from "./scenes/Scena3";
+import Scena4 from "./scenes/Scena4";
+
 import Timer from "@components/Timer";
 
 const Bitritto = () => {
@@ -30,36 +32,36 @@ const Bitritto = () => {
   }, []);
 
   // Installa PWA
-  useEffect(() => {
-    if (!installation) {
-      let deferredPrompt;
+  // useEffect(() => {
+  //   if (!installation) {
+  //     let deferredPrompt;
 
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
+  //     window.addEventListener("beforeinstallprompt", (e) => {
+  //       e.preventDefault();
+  //       deferredPrompt = e;
 
-        // Attendere un breve tempo prima di mostrare il prompt
-        setTimeout(() => {
-          setInstallation(true);
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-              if (choiceResult.outcome === "accepted") {
-                console.log("Utente ha accettato l'installazione");
-              } else {
-                console.log("Utente ha rifiutato l'installazione");
-              }
-              deferredPrompt = null;
-            });
-          }
-        }, 1000);
-      });
-    }
+  //       // Attendere un breve tempo prima di mostrare il prompt
+  //       setTimeout(() => {
+  //         setInstallation(true);
+  //         if (deferredPrompt) {
+  //           deferredPrompt.prompt();
+  //           deferredPrompt.userChoice.then((choiceResult) => {
+  //             if (choiceResult.outcome === "accepted") {
+  //               console.log("Utente ha accettato l'installazione");
+  //             } else {
+  //               console.log("Utente ha rifiutato l'installazione");
+  //             }
+  //             deferredPrompt = null;
+  //           });
+  //         }
+  //       }, 1000);
+  //     });
+  //   }
 
-    return () => {
-      window.removeEventListener("beforeinstallprompt", () => {});
-    };
-  }, [installation]);
+  //   return () => {
+  //     window.removeEventListener("beforeinstallprompt", () => {});
+  //   };
+  // }, [installation]);
 
   const [startTime, setStartTime] = useState(false);
 
@@ -97,8 +99,8 @@ const Bitritto = () => {
             />
             <Route path="/scena2" element={<Scena2 />} />
             <Route path="/scena3" element={<Scena3 />} />
-            {/*<Route path="/scena4" element={<Scena4/>} />
-            <Route path="/scena5" element={<Scena5/>} />
+            <Route path="/scena4" element={<Scena4/>} />
+            {/*<Route path="/scena5" element={<Scena5/>} />
             <Route path="/scena6" element={<Scena6/>} />
             <Route path="/scena7" element={<Scena7/>} />
             <Route path="/engine" element={<JSONEngine/>} /> */}
