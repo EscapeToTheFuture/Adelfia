@@ -64,7 +64,7 @@ const Scena3 = () => {
       <Button classes="absolute top-2" noAnimation stretch>
         Officina di Gino
       </Button>
-      {!inventory.includes("secchio") ? (
+      {!inventory.includes("secchio") && !inventory.includes("acqua")  ? (
         <ImageMapper
           src={officina}
           name="Officina di Gino"
@@ -172,7 +172,7 @@ const Scena3 = () => {
 
       {!load[0] && (
         <img
-          src={inventory.includes("secchio") ? officinaNOSecchio : officina}
+          src={inventory.includes("secchio") || inventory.includes("acqua") ? officinaNOSecchio : officina}
           alt="Officina di Gino"
           className={`absolute h-full select-none transition-opacity duration-4000`}
         />
