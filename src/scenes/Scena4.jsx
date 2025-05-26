@@ -34,11 +34,23 @@ const Scena4 = () => {
     },
     {
       speaker: "Contadino #3",
-      text: "Non posso tornare a casa finché non trovo mia figlia Francesca. Sono molto preoccupato, si diverte sempre a nascondersi... Puoi aiutarmi?",
+      text: "Non posso tornare a casa finché non trovo mia figlia Francesca.",
     },
     {
       speaker: "Contadino #3",
       text: "Grazie di aver trovato mia figlia, mia moglie sarà in pensiero per entrambi.",
+    },
+    {
+      speaker: "Contadino #3",
+      text: "Sono molto preoccupato, si diverte sempre a nascondersi... Puoi aiutarmi?",
+    },
+    {
+      speaker: "Carla",
+      text: "Non voglio sporcarmi",
+    },
+    {
+      speaker: "Carla",
+      text: "Ecco la terra, potrebbe essere utile a Gino",
     },
   ];
   const [scene, setScene] = useState(-1);
@@ -106,8 +118,39 @@ const Scena4 = () => {
     } else if (selectedArea.id == "contadino3") {
       if (interactions.includes("francesca")) {
         setScene(7);
+        if (!interactions.includes("risoltoFrancesca")) {
+          setPoints((prev) => {
+            const newPoints = prev + 1;
+            localStorage.setItem("points", JSON.stringify(newPoints));
+            return newPoints;
+          });
+          setInteractions((prev) => {
+            const newInteractions = [...prev, "risoltoFrancesca"];
+            localStorage.setItem(
+              "interactions",
+              JSON.stringify(newInteractions)
+            );
+            return newInteractions;
+          });
+        }
       } else {
         setScene(6);
+        setInteractions((prev) => {
+          const newInteractions = [...prev, "contadino3"];
+          localStorage.setItem("interactions", JSON.stringify(newInteractions));
+          return newInteractions;
+        });
+      }
+    } else if (selectedArea.id == "terra") {
+      if (interactions.includes("ginoMattoni")) {
+        setScene(10);
+        setInventory((prev) => {
+          const newInventory = [...prev, "terra"];
+          localStorage.setItem("inventory", JSON.stringify(newInventory));
+          return newInventory;
+        });
+      } else {
+        setScene(9);
       }
     }
   };
@@ -201,6 +244,20 @@ const Scena4 = () => {
             fillColor: "rgba(255, 255, 255, 0.5)",
             lineWidth: 0,
             strokeColor: "rgba(255, 255, 255, 0.5)",
+            disabled: interactions.includes("risoltoFrancesca"),
+          },
+          {
+            id: "terra",
+            shape: "poly",
+            coords: [
+              401, 2239, 415, 2080, 436, 1992, 432, 1953, 471, 1953, 496, 1953,
+              507, 1883, 623, 1879, 701, 1879, 708, 1946, 736, 2038, 736, 2123,
+              768, 2088, 835, 2052, 895, 2091, 955, 2112, 980, 2109, 1026, 2137,
+              1090, 2197, 1136, 2218, 1083, 2243,
+            ],
+            fillColor: "rgba(255, 255, 255, 0.5)",
+            lineWidth: 0,
+            strokeColor: "rgba(255, 255, 255, 0.5)",
           },
         ]}
         onChange={(selectedArea) => game(selectedArea)}
@@ -226,6 +283,8 @@ const Scena4 = () => {
               onClose={() => {
                 if (scene == 0) {
                   setScene(1);
+                } else if (scene == 6) {
+                  setScene(8);
                 } else {
                   setScene(-1);
                 }
