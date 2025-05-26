@@ -1,6 +1,6 @@
 import { HashRouter, Routes, Route } from "react-router";
 import RotatePhone from "./components/RotatePhone";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import Win from "./scenes/Win";
 import GameOver from "./scenes/GameOver";
@@ -66,14 +66,9 @@ const Bitritto = () => {
   const [startTime, setStartTime] = useState(false);
 
   useEffect(() => {
-    if(window.location.hash == '#/scena2' || window.location.hash == '#/scena3') {
-      setStartTime(true);
-    }else if(window.location.hash == '#/gameover' || window.location.hash == '#/win') {
-      setStartTime(false);
-    }else if(window.location.hash == '#/') {
-      setStartTime(false);
-    }
-  }, [window.location.hash]);
+    setStartTime(true);
+  }, []);
+  
   return (
     <>
       {isPortrait ? (

@@ -6,6 +6,7 @@ const Timer = ({ startTime, setStartTime }) => {
   const [timer, setTimer] = useState(parseInt(localStorage.getItem("saved_timer"), 10) || 10 * 60); // 10 minuti
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (!startTime) return;
@@ -37,16 +38,15 @@ const Timer = ({ startTime, setStartTime }) => {
   }, [timer]);
 
   useEffect(() => {
-    if (
-      window.location.hash === "'#/gameover'" ||
-      window.location.hash === "'#/win'"
-    ) {
-      setStartTime(false);
-    } else {     
+    if(location.pathname == '/scena2' || location.pathname == '/scena3') {
       setStartTime(true);
+    }else if(location.pathname == '/gameover' || location.pathname == '/win') {
+      setStartTime(false);
+    }else if(location.pathname == '/') {
+      setStartTime(false);
     }
-  }, [window.location.hash]);
-
+  }, [location]);
+  
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60)
       .toString()
