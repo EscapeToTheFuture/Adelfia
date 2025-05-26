@@ -51,11 +51,11 @@ const Scena2 = () => {
       let timeout;
       
       const handleActivity = () => {
-        setHint(false);
+        sethintDialogue(false);
         clearTimeout(timeout);
         timeout = setTimeout(() => {
-          setHint(true);
-        }, 5000);
+          sethintDialogue(true);
+        }, 6000);
       };
   
       window.addEventListener("mousemove", handleActivity);
@@ -80,7 +80,7 @@ const Scena2 = () => {
   const [points, setPoints] = useState(
     JSON.parse(localStorage.getItem("points")) || 0
   );
-  const [hintDialogue, sethintDialoguH] = useState(false);
+  const [hintDialogue, sethintDialogue] = useState(false);
   const navigate = useNavigate();
 
   const game = (selectedArea) => {
@@ -286,7 +286,7 @@ const Scena2 = () => {
             />
           )
       )}
-           {hint && scene == -1 && (
+           {hintDialogue && scene == -1 && (
               <Dialogue
                 absolute
                 classes="bottom-10"
@@ -295,7 +295,7 @@ const Scena2 = () => {
                   text: "Parla con i cittadini, per salvare la città!",
                   type: "hint",
                 }}
-                onClose={() => setHint(false)}
+                onClose={() => sethintDialogue(false)}
               />
             )}
     </section>
