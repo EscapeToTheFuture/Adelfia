@@ -40,9 +40,9 @@ const Scena3 = () => {
       if (inventory.includes("acqua") && inventory.includes("terra")) {
         setScene(1);
         setInventory((prev) => {
-          const newInventory = prev
+            const newInventory = prev
             .filter((item) => item !== "acqua" && item !== "terra")
-            .concat("mattoni");
+            .concat("mattoni", "secchio");
           localStorage.setItem("inventory", JSON.stringify(newInventory));
           return newInventory;
         });
@@ -176,7 +176,7 @@ const Scena3 = () => {
           alt="Officina di Gino"
           className={`absolute h-full select-none transition-opacity duration-4000`}
         />
-      )}
+      )} 
       {dialogues.map(
         (dialog, index) =>
           scene == index && (
