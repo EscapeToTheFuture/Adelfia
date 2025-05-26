@@ -21,12 +21,24 @@ const Scena4 = () => {
       text: "Pesa un pò, ma devo portarlo subito a Gino.",
     },
     {
-      speaker: "Contadino 1",
+      speaker: "Contadino #1",
       text: "Ok, tornerà subito a casa. Grazie per avermi avvisato",
     },
     {
-      speaker: "Contadino 2",
+      speaker: "Contadino #2",
       text: "Torno immediatamente, potrebbero aver bisogno di me",
+    },
+    {
+      speaker: "Carla",
+      text: "Pesa un pò, ma devo portarlo subito a Fabrizia.",
+    },
+    {
+      speaker: "Contadino #3",
+      text: "Non posso tornare a casa finché non trovo mia figlia Francesca. Sono molto preoccupato, si diverte sempre a nascondersi... Puoi aiutarmi?",
+    },
+    {
+      speaker: "Contadino #3",
+      text: "Grazie di aver trovato mia figlia, mia moglie sarà in pensiero per entrambi.",
     },
   ];
   const [scene, setScene] = useState(-1);
@@ -36,6 +48,10 @@ const Scena4 = () => {
   const [interactions, setInteractions] = useState(
     JSON.parse(localStorage.getItem("interactions")) || []
   );
+  const [points, setPoints] = useState(
+    JSON.parse(localStorage.getItem("points")) || 0
+  );
+
   const navigate = useNavigate();
 
   const game = (selectedArea) => {
@@ -44,20 +60,55 @@ const Scena4 = () => {
     } else if (selectedArea.id == "pozzo") {
       if (inventory.includes("secchio")) {
         setInventory((prev) => {
-          const newInventory = [...prev, "acqua"];
+          const newInventory = [
+            ...prev.filter((item) => item !== "secchio"),
+            "acqua",
+          ];
           localStorage.setItem("inventory", JSON.stringify(newInventory));
           return newInventory;
         });
-        setScene(2);
+        if (interactions.includes("ginoMattoni")) {
+          setScene(2);
+        } else {
+          setScene(5);
+        }
       } else {
         setScene(0);
       }
     } else if (selectedArea.id == "contadino1") {
       setScene(3);
+      setInteractions((prev) => {
+        const newInteractions = [...prev, "contadino1"];
+        localStorage.setItem("interactions", JSON.stringify(newInteractions));
+        return newInteractions;
+      });
+      if (interactions.includes("contadino2")) {
+        setPoints((prev) => {
+          const newPoints = prev + 1;
+          localStorage.setItem("points", JSON.stringify(newPoints));
+          return newPoints;
+        });
+      }
     } else if (selectedArea.id == "contadino2") {
       setScene(4);
+      setInteractions((prev) => {
+        const newInteractions = [...prev, "contadino2"];
+        localStorage.setItem("interactions", JSON.stringify(newInteractions));
+        return newInteractions;
+      });
+      if (interactions.includes("contadino1")) {
+        setPoints((prev) => {
+          const newPoints = prev + 1;
+          localStorage.setItem("points", JSON.stringify(newPoints));
+          return newPoints;
+        });
+      }
     } else if (selectedArea.id == "contadino3") {
-      setScene(5);
+      if (interactions.includes("francesca")) {
+        setScene(7);
+      } else {
+        setScene(6);
+      }
     }
   };
 
@@ -118,6 +169,7 @@ const Scena4 = () => {
             fillColor: "rgba(255, 255, 255, 0.5)",
             lineWidth: 0,
             strokeColor: "rgba(255, 255, 255, 0.5)",
+            disabled: interactions.includes("contadino1"),
           },
           {
             id: "contadino2",
@@ -134,6 +186,7 @@ const Scena4 = () => {
             fillColor: "rgba(255, 255, 255, 0.5)",
             lineWidth: 0,
             strokeColor: "rgba(255, 255, 255, 0.5)",
+            disabled: interactions.includes("contadino2"),
           },
           {
             id: "contadino3",
