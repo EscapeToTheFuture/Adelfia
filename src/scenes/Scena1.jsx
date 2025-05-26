@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ImageMapper from "react-img-mapper";
 import casa from "@assets/images/Casa.png";
 import pergamena from "@assets/images/Pergamena.png";
@@ -9,7 +9,29 @@ import { useNavigate } from "react-router";
 const Scena1 = ({ setTimer }) => {
   const [load, setLoad] = useState([false, false]);
   const [scene, setScene] = useState(1);
+  const [hint, setHint] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let timeout;
+    
+    const handleActivity = () => {
+      setHint(false);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setHint(true);
+      }, 5000);
+    };
+
+    window.addEventListener("mousemove", handleActivity);
+    window.addEventListener("click", handleActivity);
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("mousemove", handleActivity);
+      window.removeEventListener("click", handleActivity);
+    };
+  }, []);
 
   const dialogues = [
     {
@@ -42,7 +64,7 @@ const Scena1 = ({ setTimer }) => {
           src={pergamena}
           alt="Pergamena"
           onLoad={() => setLoad((prev) => [true, prev[1]])}
-          className={"absolute z-10 animate-unroll select-none h-full"}
+          className={"absolute z-10 animate-unroll select-none w-full"}
         />
       )}
 
@@ -81,7 +103,7 @@ const Scena1 = ({ setTimer }) => {
           },
         ]}
         onChange={() => {
-          navigate("/scena2")
+          navigate("/scena2");
         }}
         isMulti={false}
         onLoad={() => setLoad((prev) => [prev[0], true])}
@@ -106,6 +128,19 @@ const Scena1 = ({ setTimer }) => {
         >
           Avanti
         </Button>
+      )}
+
+      {hint && scene == dialogues.length +2 && (
+        <Dialogue
+          absolute
+          classes="bottom-10"
+          dialogue={{
+            speaker: "Narratore",
+            text: "Non c'è tempo da perdere! Muoviti!",
+            type: "hint",
+          }}
+          onClose={() => setHint(false)}
+        />
       )}
 
       {dialogues.map(
