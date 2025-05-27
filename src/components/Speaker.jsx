@@ -7,13 +7,13 @@ const Speaker = ({ speaker, type }) => {
       className={
         "" +
         (type == "hint"
-          ? "relative right-20 bottom-3"
+          ? "relative right-10 bottom-3"
           : "relative -left-20 -top-3 scale-90 md:-left-0 md:-top-10 md:scale-110")
       }
     >
       {type == "hint" ? (
         <div>
-          <img src={speaker_box_img} alt="" className="-rotate-10 w-3/2" />
+          <img src={speaker_box_img} alt="" className="-rotate-10 w-2/3" />
         </div>
       ) : (
         <svg
@@ -30,7 +30,7 @@ const Speaker = ({ speaker, type }) => {
           />
         </svg>
       )}
-      <div className="absolute inset-0 flex justify-center items-center transform -rotate-9">
+      <div className={`absolute inset-0 flex justify-start items-center transform -rotate-9 pl-10 pb-2`}>
         <p
           className={
             "text-sm md:text-base lg:text-lg font-bold " +

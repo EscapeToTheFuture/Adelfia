@@ -134,11 +134,6 @@ const Scena2 = () => {
           localStorage.setItem("inventory", JSON.stringify(newInventory));
           return newInventory;
         });
-        setPoints((prev) => {
-          const newPoints = prev + 1;
-          localStorage.setItem("points", JSON.stringify(newPoints));
-          return newPoints;
-        });
         setInteractions((prev) => {
           const newInteractions = [...prev, "fabrizia"];
           localStorage.setItem(
@@ -159,7 +154,7 @@ const Scena2 = () => {
 
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
-      <Button classes="absolute top-2" noAnimation stretch>
+      <Button classes="absolute top-2 sm:text-[1rem]" noAnimation stretch>
         {hint}
       </Button>
       <ImageMapper
@@ -167,7 +162,7 @@ const Scena2 = () => {
         name="Piazza di Adelfia"
         natural
         imgWidth={1920}
-        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth}
+        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
         responsive={true}
         areas={[
           {

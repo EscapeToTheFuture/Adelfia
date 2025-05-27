@@ -52,7 +52,7 @@ const Scena3 = () => {
       if (!interactions.includes("ginoMattoni")) {
         setInteractions((prev) => {
           const newInteraction = [...prev, "ginoMattoni"];
-          localStorage.setItem("interaction", JSON.stringify(newInteraction));
+          localStorage.setItem("interactions", JSON.stringify(newInteraction));
           return newInteraction;
         });
       }
@@ -70,7 +70,7 @@ const Scena3 = () => {
           name="Officina di Gino"
           natural
           imgWidth={1920}
-          parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth}
+          parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
           responsive={true}
           areas={[
             {
@@ -128,7 +128,7 @@ const Scena3 = () => {
           name="Officina di Gino"
           natural
           imgWidth={1920}
-          parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth}
+          parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
           responsive={true}
           areas={[
             {

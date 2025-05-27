@@ -73,7 +73,7 @@ const Scena1 = ({ setTimer }) => {
         name="Casa di Carla"
         natural
         imgWidth={1920}
-        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth}
+        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
         responsive={true}
         disabled={scene != dialogues.length + 2}
         containerProps={{

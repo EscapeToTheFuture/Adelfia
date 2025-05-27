@@ -30,7 +30,7 @@ const Scena4 = () => {
     },
     {
       speaker: "Carla",
-      text: "Pesa un pò, ma devo portarlo subito a Fabrizia.",
+      text: "Pesa un pò, ma sicuramente mi servirà per qualcosa",
     },
     {
       speaker: "Contadino #3",
@@ -165,7 +165,7 @@ const Scena4 = () => {
         name="Campagna di Adelfia"
         natural
         imgWidth={1920}
-        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth}
+        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
         responsive={true}
         areas={[
           {
@@ -258,6 +258,7 @@ const Scena4 = () => {
             fillColor: "rgba(255, 255, 255, 0.5)",
             lineWidth: 0,
             strokeColor: "rgba(255, 255, 255, 0.5)",
+            disabled: inventory.includes("terra"),
           },
         ]}
         onChange={(selectedArea) => game(selectedArea)}
