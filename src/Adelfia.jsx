@@ -12,6 +12,7 @@ import Scena3 from "./scenes/Scena3";
 import Scena4 from "./scenes/Scena4";
 
 import Timer from "@components/Timer";
+import Inventory from "./components/Inventory";
 
 const Bitritto = () => {
   const [isPortrait, setIsPortrait] = useState(
@@ -68,7 +69,7 @@ const Bitritto = () => {
   useEffect(() => {
     setStartTime(true);
   }, []);
-  
+
   return (
     <>
       {isPortrait ? (
@@ -76,7 +77,10 @@ const Bitritto = () => {
       ) : (
         <HashRouter>
           {startTime && (
-            <Timer startTime={startTime} setStartTime={setStartTime} />
+            <>
+              <Timer startTime={startTime} setStartTime={setStartTime} />
+              <Inventory />
+            </>
           )}
           <Routes>
             <Route
@@ -94,7 +98,7 @@ const Bitritto = () => {
             />
             <Route path="/scena2" element={<Scena2 />} />
             <Route path="/scena3" element={<Scena3 />} />
-            <Route path="/scena4" element={<Scena4/>} />
+            <Route path="/scena4" element={<Scena4 />} />
             {/*<Route path="/scena5" element={<Scena5/>} />
             <Route path="/scena6" element={<Scena6/>} />
             <Route path="/scena7" element={<Scena7/>} />
