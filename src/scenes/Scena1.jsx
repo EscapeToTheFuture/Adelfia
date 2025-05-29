@@ -5,6 +5,7 @@ import pergamena from "@assets/images/Pergamena.png";
 import Button from "@components/Button";
 import Dialogue from "@components/Dialogue";
 import { useNavigate } from "react-router";
+import aperturaPergamena from "@assets/sounds/aperturaPergamena.mp3";
 
 const Scena1 = ({ setTimer }) => {
   const [load, setLoad] = useState([false, false]);
@@ -33,6 +34,15 @@ const Scena1 = ({ setTimer }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if(scene == 1 && load[1]) {
+      const audio = new Audio(aperturaPergamena);
+      audio.play().catch((error) => {
+        console.error("Errore durante la riproduzione del suono:", error);
+      });
+    }
+  }, [scene, load]);
+
   const dialogues = [
     {
       speaker: "Padre",
@@ -57,6 +67,12 @@ const Scena1 = ({ setTimer }) => {
     },
   ];
 
+
+
+  const isAppInstalled = window.matchMedia('(display-mode: standalone)').matches 
+    || window.navigator.standalone === true;
+  const margin = !isAppInstalled && window.innerWidth <= 768 ? Math.round(window.innerWidth * 0.05) : 0;
+
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
       {scene == 1 && (
@@ -73,7 +89,7 @@ const Scena1 = ({ setTimer }) => {
         name="Casa di Carla"
         natural
         imgWidth={1920}
-        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
+        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - margin}
         responsive={true}
         disabled={scene != dialogues.length + 2}
         containerProps={{

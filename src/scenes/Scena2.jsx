@@ -32,42 +32,40 @@ const Scena2 = () => {
       speaker: "Francesca",
       text: "Oddio! Va bene, torno subito! Grazie Carla",
     },
-  {
-    speaker: "Fabrizia",
-    text: "Sono assetata, non riesco a concentrarmi senza un po' d'acqua. Portamene, per favore",
-  },
-  {
-    speaker: "Fabrizia",
-    text: "Cosa me ne faccio di un secchio vuoto? Riempiamolo di acqua, per favore!",
-  },
-  {
-    speaker: "Fabrizia",
-    text: "Grazie per il tuo aiuto, Carla. Ora siamo pronti a resistere.",
-  },
-
+    {
+      speaker: "Fabrizia",
+      text: "Sono assetata, non riesco a concentrarmi senza un po' d'acqua. Portamene, per favore",
+    },
+    {
+      speaker: "Fabrizia",
+      text: "Cosa me ne faccio di un secchio vuoto? Riempiamolo di acqua, per favore!",
+    },
+    {
+      speaker: "Fabrizia",
+      text: "Grazie per il tuo aiuto, Carla. Ora siamo pronti a resistere.",
+    },
   ];
 
-    useEffect(() => {
-      let timeout;
-      
-      const handleActivity = () => {
-        sethintDialogue(false);
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          sethintDialogue(true);
-        }, 6000);
-      };
-  
-      window.addEventListener("mousemove", handleActivity);
-      window.addEventListener("click", handleActivity);
-  
-      return () => {
-        clearTimeout(timeout);
-        window.removeEventListener("mousemove", handleActivity);
-        window.removeEventListener("click", handleActivity);
-      };
-    }, []);
+  useEffect(() => {
+    let timeout;
 
+    const handleActivity = () => {
+      sethintDialogue(false);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        sethintDialogue(true);
+      }, 6000);
+    };
+
+    window.addEventListener("mousemove", handleActivity);
+    window.addEventListener("click", handleActivity);
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("mousemove", handleActivity);
+      window.removeEventListener("click", handleActivity);
+    };
+  }, []);
 
   const [scene, setScene] = useState(-1);
   const [hint, setHint] = useState("Parla con i cittadini");
@@ -94,10 +92,7 @@ const Scena2 = () => {
         );
         setInteractions((prev) => {
           const newInteractions = [...prev, "ignazio"];
-          localStorage.setItem(
-            "interactions",
-            JSON.stringify(newInteractions)
-          );
+          localStorage.setItem("interactions", JSON.stringify(newInteractions));
           return newInteractions;
         });
         setPoints((prev) => {
@@ -122,7 +117,7 @@ const Scena2 = () => {
         setScene(3);
       }
     } else if (selectedArea.id == "fabrizia") {
-      if(inventory.includes("acqua")){
+      if (inventory.includes("acqua")) {
         setScene(8);
         setPoints((prev) => {
           const newPoints = prev + 1;
@@ -130,19 +125,19 @@ const Scena2 = () => {
           return newPoints;
         });
         setInventory((prev) => {
-          const newInventory = [...prev.filter((item) => item !== "acqua"), "secchio"];
+          const newInventory = [
+            ...prev.filter((item) => item !== "acqua"),
+            "secchio",
+          ];
           localStorage.setItem("inventory", JSON.stringify(newInventory));
           return newInventory;
         });
         setInteractions((prev) => {
           const newInteractions = [...prev, "fabrizia"];
-          localStorage.setItem(
-            "interactions",
-            JSON.stringify(newInteractions)
-          );
+          localStorage.setItem("interactions", JSON.stringify(newInteractions));
           return newInteractions;
         });
-      }else if (inventory.includes("secchio")) {
+      } else if (inventory.includes("secchio")) {
         setScene(7);
         setHint("Porta dell'acqua a Fabrizia");
       } else {
@@ -151,6 +146,14 @@ const Scena2 = () => {
       }
     }
   };
+
+  const isAppInstalled =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+  const margin =
+    !isAppInstalled && window.innerWidth <= 768
+      ? Math.round(window.innerWidth * 0.05)
+      : 0;
 
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
@@ -162,7 +165,9 @@ const Scena2 = () => {
         name="Piazza di Adelfia"
         natural
         imgWidth={1920}
-        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
+        parentWidth={
+          window.innerWidth > 1920 ? 1920 : window.innerWidth - margin
+        }
         responsive={true}
         areas={[
           {
@@ -281,18 +286,18 @@ const Scena2 = () => {
             />
           )
       )}
-           {hintDialogue && scene == -1 && (
-              <Dialogue
-                absolute
-                classes="bottom-10"
-                dialogue={{
-                  speaker: "Narratore",
-                  text: "Parla con i cittadini, per salvare la città!",
-                  type: "hint",
-                }}
-                onClose={() => sethintDialogue(false)}
-              />
-            )}
+      {hintDialogue && scene == -1 && (
+        <Dialogue
+          absolute
+          classes="bottom-10"
+          dialogue={{
+            speaker: "Narratore",
+            text: "Parla con i cittadini, per salvare la città!",
+            type: "hint",
+          }}
+          onClose={() => sethintDialogue(false)}
+        />
+      )}
     </section>
   );
 };

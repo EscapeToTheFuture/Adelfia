@@ -155,6 +155,14 @@ const Scena4 = () => {
     }
   };
 
+  const isAppInstalled =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+  const margin =
+    !isAppInstalled && window.innerWidth <= 768
+      ? Math.round(window.innerWidth * 0.05)
+      : 0;
+
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
       <Button classes="absolute top-2" noAnimation stretch>
@@ -165,7 +173,9 @@ const Scena4 = () => {
         name="Campagna di Adelfia"
         natural
         imgWidth={1920}
-        parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
+        parentWidth={
+          window.innerWidth > 1920 ? 1920 : window.innerWidth - margin
+        }
         responsive={true}
         areas={[
           {

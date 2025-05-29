@@ -40,7 +40,7 @@ const Scena3 = () => {
       if (inventory.includes("acqua") && inventory.includes("terra")) {
         setScene(1);
         setInventory((prev) => {
-            const newInventory = prev
+          const newInventory = prev
             .filter((item) => item !== "acqua" && item !== "terra")
             .concat("mattoni", "secchio");
           localStorage.setItem("inventory", JSON.stringify(newInventory));
@@ -59,18 +59,28 @@ const Scena3 = () => {
     }
   };
 
+  const isAppInstalled =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+  const margin =
+    !isAppInstalled && window.innerWidth <= 768
+      ? Math.round(window.innerWidth * 0.05)
+      : 0;
+
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
       <Button classes="absolute top-2" noAnimation stretch>
         Officina di Gino
       </Button>
-      {!inventory.includes("secchio") && !inventory.includes("acqua")  ? (
+      {!inventory.includes("secchio") && !inventory.includes("acqua") ? (
         <ImageMapper
           src={officina}
           name="Officina di Gino"
           natural
           imgWidth={1920}
-          parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
+          parentWidth={
+            window.innerWidth > 1920 ? 1920 : window.innerWidth - 150
+          }
           responsive={true}
           areas={[
             {
@@ -128,7 +138,9 @@ const Scena3 = () => {
           name="Officina di Gino"
           natural
           imgWidth={1920}
-          parentWidth={window.innerWidth > 1920 ? 1920 : window.innerWidth - 150}
+          parentWidth={
+            window.innerWidth > 1920 ? 1920 : window.innerWidth - margin
+          }
           responsive={true}
           areas={[
             {
@@ -172,11 +184,15 @@ const Scena3 = () => {
 
       {!load[0] && (
         <img
-          src={inventory.includes("secchio") || inventory.includes("acqua") ? officinaNOSecchio : officina}
+          src={
+            inventory.includes("secchio") || inventory.includes("acqua")
+              ? officinaNOSecchio
+              : officina
+          }
           alt="Officina di Gino"
           className={`absolute h-full select-none transition-opacity duration-4000`}
         />
-      )} 
+      )}
       {dialogues.map(
         (dialog, index) =>
           scene == index && (
