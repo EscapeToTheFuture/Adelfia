@@ -33,36 +33,36 @@ const Bitritto = () => {
   }, []);
 
   // Installa PWA
-  // useEffect(() => {
-  //   if (!installation) {
-  //     let deferredPrompt;
+ useEffect(() => {
+   if (!installation) {
+     let deferredPrompt;
 
-  //     window.addEventListener("beforeinstallprompt", (e) => {
-  //       e.preventDefault();
-  //       deferredPrompt = e;
+     window.addEventListener("beforeinstallprompt", (e) => {
+       e.preventDefault();
+       deferredPrompt = e;
 
-  //       // Attendere un breve tempo prima di mostrare il prompt
-  //       setTimeout(() => {
-  //         setInstallation(true);
-  //         if (deferredPrompt) {
-  //           deferredPrompt.prompt();
-  //           deferredPrompt.userChoice.then((choiceResult) => {
-  //             if (choiceResult.outcome === "accepted") {
-  //               console.log("Utente ha accettato l'installazione");
-  //             } else {
-  //               console.log("Utente ha rifiutato l'installazione");
-  //             }
-  //             deferredPrompt = null;
-  //           });
-  //         }
-  //       }, 1000);
-  //     });
-  //   }
+     // Attendere un breve tempo prima di mostrare il prompt
+       setTimeout(() => {
+         setInstallation(true);
+         if (deferredPrompt) {
+           deferredPrompt.prompt();
+           deferredPrompt.userChoice.then((choiceResult) => {
+             if (choiceResult.outcome === "accepted") {
+               console.log("Utente ha accettato l'installazione");
+             } else {
+               console.log("Utente ha rifiutato l'installazione");
+             }
+             deferredPrompt = null;
+           });
+         }
+       }, 1000);
+     });
+   }
 
-  //   return () => {
-  //     window.removeEventListener("beforeinstallprompt", () => {});
-  //   };
-  // }, [installation]);
+   return () => {
+     window.removeEventListener("beforeinstallprompt", () => {});
+   };
+ }, [installation]);
 
   const [startTime, setStartTime] = useState(false);
 
