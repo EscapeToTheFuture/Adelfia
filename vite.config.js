@@ -17,7 +17,7 @@ export default defineConfig({
         "start_url": "/",
         "display": "fullscreen",
         "background_color": "#463B3E",
-        "theme_color": "#F54900",
+        "theme_color": "#00A63E",
         "orientation": "landscape",
         "scope": "/",
         "lang": "it-IT",
@@ -25,7 +25,7 @@ export default defineConfig({
         "categories": ["education", "game"],
         "screenshots": [
           {
-            "src": "/screenshot/1-desktop.png",
+            "src": "/Adelfia/screenshot/1-desktop.png",
             "sizes": "1920x1080",
             "type": "image/png",
             "label": "Inizio del gioco",
@@ -33,7 +33,7 @@ export default defineConfig({
             "form_factor": "wide"
           },
           {
-            "src": "screenshot/1-mobile.png",
+            "src": "/Adelfia/screenshot/1-mobile.png",
             "sizes": "874x402",
             "type": "image/png",
             "label": "Inizio del gioco",
@@ -43,52 +43,52 @@ export default defineConfig({
         ],
         "icons": [
           {
-            "src": "logos/logo-48x48.png",
+            "src": "logos/icon-48x48.png",
             "sizes": "48x48",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-72x72.png",
+            "src": "logos/icon-72x72.png",
             "sizes": "72x72",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-96x96.png",
+            "src": "logos/icon-96x96.png",
             "sizes": "96x96",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-128x128.png",
+            "src": "logos/icon-128x128.png",
             "sizes": "128x128",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-144x144.png",
+            "src": "logos/icon-144x144.png",
             "sizes": "144x144",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-152x152.png",
+            "src": "logos/icon-152x152.png",
             "sizes": "152x152",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-192x192.png",
+            "src": "logos/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-256x256.png",
+            "src": "logos/icon-256x256.png",
             "sizes": "256x256",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-384x384.png",
+            "src": "logos/icon-384x384.png",
             "sizes": "384x384",
             "type": "image/png"
           },
           {
-            "src": "logos/logo-512x512.png",
+            "src": "logos/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
           }
