@@ -155,23 +155,23 @@ const Scena2 = () => {
     let sound;
     if (load[0]) {
       const playMusic = async () => {
-      try {
-        sound = new Howl({
-        src: [medievalOst],
-        volume: 0.2,
-        loop: true,
-        html5: true,
-        onplayerror: () => {
+        try {
+          sound = new Howl({
+            src: [medievalOst],
+            volume: 0.2,
+            loop: true,
+            html5: true,
+            onplayerror: () => {
+              setNoAudioPermission(true);
+            },
+            onloaderror: () => {
+              setNoAudioPermission(true);
+            },
+          });
+          sound.play();
+        } catch {
           setNoAudioPermission(true);
-        },
-        onloaderror: () => {
-          setNoAudioPermission(true);
-        },
-        });
-        sound.play();
-      } catch {
-        setNoAudioPermission(true);
-      }
+        }
       };
       playMusic();
     }
@@ -179,7 +179,6 @@ const Scena2 = () => {
       if (sound) sound.unload();
     };
   }, [load, noAudioPermission]);
-
 
   const isAppInstalled =
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -250,8 +249,10 @@ const Scena2 = () => {
             id: "campagne",
             shape: "poly",
             coords: [
-              1591, 949, 1591, 1048, 1820, 1034, 1856, 1029, 1910, 983, 1844,
-              936, 1733, 943,
+              1595, 1044, 1588, 953, 1729, 944, 1727, 919, 1614, 910, 1595, 892,
+              1558, 860, 1629, 821, 1719, 829, 1724, 812, 1738, 809, 1741, 826,
+              1877, 846, 1867, 938, 1744, 922, 1744, 936, 1853, 939, 1902, 985,
+              1855, 1027, 1743, 1038, 1741, 1078, 1726, 1077, 1724, 1041,
             ],
             fillColor: "rgba(255, 255, 255, 0.3)",
             lineWidth: 0,
@@ -335,29 +336,29 @@ const Scena2 = () => {
           classes="absolute bottom-2 left-2"
           onClick={() => {
             setNoAudioPermission(false);
-          }}>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-16 text-black"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M11.25 5.25L6.75 9H4.5a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h2.25l4.5 3.75V5.25z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M14.25 8.25a6.75 6.75 0 010 9.5m2.25-11.75a9.75 9.75 0 010 13.75"
-                />
-              </svg>
-          </Button>
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-16 text-black"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M11.25 5.25L6.75 9H4.5a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h2.25l4.5 3.75V5.25z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M14.25 8.25a6.75 6.75 0 010 9.5m2.25-11.75a9.75 9.75 0 010 13.75"
+            />
+          </svg>
+        </Button>
       )}
-      
     </section>
   );
 };
