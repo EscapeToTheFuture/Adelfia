@@ -158,7 +158,7 @@ const Scena2 = () => {
         try {
           sound = new Howl({
             src: [medievalOst],
-            volume: 0.2,
+            volume: 0.15,
             loop: true,
             html5: true,
             onplayerror: () => {
@@ -180,13 +180,11 @@ const Scena2 = () => {
     };
   }, [load, noAudioPermission]);
 
-  const isAppInstalled =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true;
-  const margin =
-    !isAppInstalled && window.innerWidth <= 768
-      ? Math.round(window.innerWidth * 0.05)
-      : 0;
+
+  const windowHeight = window.innerHeight;
+  const imgWidth = 1920;
+  const imgHeight = 1080;
+  const scaledWidth = Math.round((windowHeight / imgHeight) * imgWidth);
 
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
@@ -197,9 +195,9 @@ const Scena2 = () => {
         src={piazza}
         name="Piazza di Adelfia"
         natural
-        imgWidth={1920}
+        imgWidth={imgWidth}
         parentWidth={
-          window.innerWidth > 1920 ? 1920 : window.innerWidth - margin
+          scaledWidth
         }
         responsive={true}
         areas={[

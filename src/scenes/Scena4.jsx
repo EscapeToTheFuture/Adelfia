@@ -192,13 +192,10 @@ const Scena4 = () => {
       };
     }
   }, [load, noAudioPermission]);
-  const isAppInstalled =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true;
-  const margin =
-    !isAppInstalled && window.innerWidth <= 768
-      ? Math.round(window.innerWidth * 0.05)
-      : 0;
+
+  const imgWidth = 1920;
+  const imgHeight = 1080;
+  const scaledWidth = Math.round((windowHeight / imgHeight) * imgWidth);
 
   return (
     <section className="w-full h-svh flex flex-col items-center justify-center relative">
@@ -209,10 +206,8 @@ const Scena4 = () => {
         src={campagna}
         name="Campagna di Adelfia"
         natural
-        imgWidth={1920}
-        parentWidth={
-          window.innerWidth > 1920 ? 1920 : window.innerWidth - margin
-        }
+        imgWidth={imgWidth}
+        parentWidth={scaledWidth}
         responsive={true}
         areas={[
           {
