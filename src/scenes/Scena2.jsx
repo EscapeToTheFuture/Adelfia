@@ -197,7 +197,7 @@ const Scena2 = () => {
         natural
         imgWidth={imgWidth}
         parentWidth={
-          scaledWidth
+          window.innerWidth > 1920 ? 1920 : scaledWidth
         }
         responsive={true}
         areas={[

@@ -208,7 +208,7 @@ const Scena4 = () => {
         name="Campagna di Adelfia"
         natural
         imgWidth={imgWidth}
-        parentWidth={scaledWidth}
+        parentWidth={window.innerWidth > 1920 ? 1920 : scaledWidth}
         responsive={true}
         areas={[
           {
