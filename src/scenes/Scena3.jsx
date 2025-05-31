@@ -125,7 +125,7 @@ const Scena3 = () => {
           name="Officina di Gino"
           natural
           imgWidth={imgWidth}
-          parentWidth={window.innerWidth > 1920 ? 1920 : scaledWidth}
+          parentWidth={window.innerWidth > 1400 ? 1920 : scaledWidth}
           responsive={true}
           areas={[
             {
