@@ -1,9 +1,52 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Speaker from "./Speaker";
+import dialogoAudio from "@assets/sounds/dialogues.mp3";
+import {Howl, Howler} from 'howler';
 
 const Dialogue = ({ dialogue, absolute=false, classes, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
+    const soundDialogueTimes = [
+    [0, 0.7],
+    [1.5, 3.4],
+    [4.5, 5.2],
+    [6, 7,3],
+    [8, 8.3],
+    [9.5, 10.2],
+    [10.9, 12.4],
+    [12.9, 13.7],
+    [14.5, 15.3],
+    [15.4, 16.2],
+    [17, 17.9],
+    [19.1, 19.8]
+  ]
+
+  const pickClip = (text) => {
+    const idx = Math.floor(Math.random() * soundDialogueTimes.length);
+    return soundDialogueTimes[idx];
+  };
+
+  useEffect(() => {
+    let sound;
+    if (isVisible) {
+      const [start, end] = pickClip(dialogue.text);
+      sound = new Howl({
+        src: [dialogoAudio],
+        sprite: {
+          clip: [start * 1000, (end - start) * 1000]
+        },
+        volume: 0.7
+      });
+      sound.play('clip');
+    }
+    return () => {
+      if (sound) {
+        sound.stop();
+        sound.unload();
+      }
+    };
+  }, [isVisible, dialogue.text]);
+
 
   useEffect(() => {
     if (dialogue.delay) {

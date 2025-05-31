@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import Dialogue from "../components/Dialogue";
 import { useNavigate } from "react-router";
+import { Howl } from "howler";
+import medievalOst from "@assets/sounds/ost/medieval.mp3";
 
 const Scena2 = () => {
   const [load, setLoad] = useState([false]);
@@ -147,6 +149,38 @@ const Scena2 = () => {
     }
   };
 
+  const [noAudioPermission, setNoAudioPermission] = useState(false);
+
+  useEffect(() => {
+    let sound;
+    if (load[0]) {
+      const playMusic = async () => {
+      try {
+        sound = new Howl({
+        src: [medievalOst],
+        volume: 0.2,
+        loop: true,
+        html5: true,
+        onplayerror: () => {
+          setNoAudioPermission(true);
+        },
+        onloaderror: () => {
+          setNoAudioPermission(true);
+        },
+        });
+        sound.play();
+      } catch {
+        setNoAudioPermission(true);
+      }
+      };
+      playMusic();
+    }
+    return () => {
+      if (sound) sound.unload();
+    };
+  }, [load, noAudioPermission]);
+
+
   const isAppInstalled =
     window.matchMedia("(display-mode: standalone)").matches ||
     window.navigator.standalone === true;
@@ -242,11 +276,9 @@ const Scena2 = () => {
       />
 
       {!load[0] && (
-        <img
-          src={piazza}
-          alt="Piazza di Adelfia"
-          className={`absolute h-full select-none transition-opacity duration-4000`}
-        />
+        <div className="flex flex-col items-center justify-center w-screen h-screen bg-black text-white">
+          <h3>Caricamento...</h3>
+        </div>
       )}
       {dialogues.map(
         (dialog, index) =>
@@ -298,6 +330,34 @@ const Scena2 = () => {
           onClose={() => sethintDialogue(false)}
         />
       )}
+      {noAudioPermission && (
+        <Button
+          classes="absolute bottom-2 left-2"
+          onClick={() => {
+            setNoAudioPermission(false);
+          }}>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-16 text-black"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 5.25L6.75 9H4.5a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h2.25l4.5 3.75V5.25z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.25 8.25a6.75 6.75 0 010 9.5m2.25-11.75a9.75 9.75 0 010 13.75"
+                />
+              </svg>
+          </Button>
+      )}
+      
     </section>
   );
 };

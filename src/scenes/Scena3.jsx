@@ -1,10 +1,13 @@
 import officina from "@assets/images/OfficinaFabbro.png";
 import officinaNOSecchio from "@assets/images/OfficinaFabbro-NOSecchio.png";
 import ImageMapper from "react-img-mapper";
-import { useState } from "react";
 import Button from "../components/Button";
 import Dialogue from "../components/Dialogue";
 import { useNavigate } from "react-router";
+import { Howl } from "howler";
+import { useEffect, useState } from "react";
+import fabbroOst1 from "@assets/sounds/ost/fabbro.mp3";
+import fabbroOst2 from "@assets/sounds/ost/fabbro2.mp3";
 
 const Scena3 = () => {
   const [load, setLoad] = useState([false]);
@@ -58,6 +61,52 @@ const Scena3 = () => {
       }
     }
   };
+  const [noAudioPermission, setNoAudioPermission] = useState(false);
+
+  useEffect(() => {
+    let sound;
+    if (load[0] && !noAudioPermission) {
+      let sound1, sound2;
+      const playMusic = async () => {
+      try {
+        sound1 = new Howl({
+        src: [fabbroOst1],
+        volume: 0.5,
+        loop: true,
+        html5: true,
+        onplayerror: () => {
+          setNoAudioPermission(true);
+        },
+        onloaderror: () => {
+          setNoAudioPermission(true);
+        },
+        });
+        sound2 = new Howl({
+        src: [fabbroOst2],
+        volume: 0.5,
+        loop: true,
+        html5: true,
+        onplayerror: () => {
+          setNoAudioPermission(true);
+        },
+        onloaderror: () => {
+          setNoAudioPermission(true);
+        },
+        });
+        sound1.play();
+        sound2.play();
+      } catch {
+        setNoAudioPermission(true);
+      }
+      };
+      playMusic();
+      return () => {
+      if (sound1) sound1.unload();
+      if (sound2) sound2.unload();
+      };
+    }
+  }, [load, noAudioPermission]);
+
 
   const isAppInstalled =
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -79,7 +128,7 @@ const Scena3 = () => {
           natural
           imgWidth={1920}
           parentWidth={
-            window.innerWidth > 1920 ? 1920 : window.innerWidth - 150
+            window.innerWidth > 1920 ? 1920 : window.innerWidth - margin
           }
           responsive={true}
           areas={[
@@ -183,15 +232,9 @@ const Scena3 = () => {
       )}
 
       {!load[0] && (
-        <img
-          src={
-            inventory.includes("secchio") || inventory.includes("acqua")
-              ? officinaNOSecchio
-              : officina
-          }
-          alt="Officina di Gino"
-          className={`absolute h-full select-none transition-opacity duration-4000`}
-        />
+        <div className="flex flex-col items-center justify-center w-screen h-screen bg-black text-white">
+          <h3>Caricamento...</h3>
+        </div>
       )}
       {dialogues.map(
         (dialog, index) =>
@@ -206,6 +249,33 @@ const Scena3 = () => {
               }}
             />
           )
+      )}
+      {noAudioPermission && (
+        <Button
+          classes="absolute bottom-2 left-2"
+          onClick={() => {
+            setNoAudioPermission(false);
+          }}>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-16 text-black"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 5.25L6.75 9H4.5a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h2.25l4.5 3.75V5.25z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.25 8.25a6.75 6.75 0 010 9.5m2.25-11.75a9.75 9.75 0 010 13.75"
+                />
+              </svg>
+          </Button>
       )}
     </section>
   );

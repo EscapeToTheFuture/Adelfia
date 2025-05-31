@@ -1,9 +1,12 @@
 import campagna from "@assets/images/Campagna.png";
 import ImageMapper from "react-img-mapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import Dialogue from "../components/Dialogue";
 import { useNavigate } from "react-router";
+import { Howl } from "howler";
+import campagneOst from "@assets/sounds/ost/campagne.mp3";
+import riempiAcqua from "@assets/sounds/riempiAcqua.mp3";
 
 const Scena4 = () => {
   const [load, setLoad] = useState([false]);
@@ -72,12 +75,19 @@ const Scena4 = () => {
     } else if (selectedArea.id == "pozzo") {
       if (inventory.includes("secchio")) {
         setInventory((prev) => {
-          const newInventory = [
+            const newInventory = [
             ...prev.filter((item) => item !== "secchio"),
             "acqua",
-          ];
-          localStorage.setItem("inventory", JSON.stringify(newInventory));
-          return newInventory;
+            ];
+            localStorage.setItem("inventory", JSON.stringify(newInventory));
+            try {
+            const waterSound = new Howl({
+              src: [riempiAcqua],
+              volume: 0.5,
+            });
+            waterSound.play();
+            } catch {}
+            return newInventory;
         });
         if (interactions.includes("ginoMattoni")) {
           setScene(2);
@@ -155,6 +165,33 @@ const Scena4 = () => {
     }
   };
 
+  const [noAudioPermission, setNoAudioPermission] = useState(false);
+
+  useEffect(() => {
+    let sound;
+    if (load[0] && !noAudioPermission) {
+      try {
+        sound = new Howl({
+          src: [campagneOst],
+          volume: 0.5,
+          loop: true,
+          html5: true,
+          onplayerror: () => {
+            setNoAudioPermission(true);
+          },
+          onloaderror: () => {
+            setNoAudioPermission(true);
+          },
+        });
+        sound.play();
+      } catch {
+        setNoAudioPermission(true);
+      }
+      return () => {
+        if (sound) sound.unload();
+      };
+    }
+  }, [load, noAudioPermission]);
   const isAppInstalled =
     window.matchMedia("(display-mode: standalone)").matches ||
     window.navigator.standalone === true;

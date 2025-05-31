@@ -6,6 +6,9 @@ import Button from "@components/Button";
 import Dialogue from "@components/Dialogue";
 import { useNavigate } from "react-router";
 import aperturaPergamena from "@assets/sounds/aperturaPergamena.mp3";
+import { Howl } from "howler";
+import pop from "@assets/sounds/pop.mp3";
+import runningScene from "@assets/sounds/ost/runningScena1.mp3";
 
 const Scena1 = ({ setTimer }) => {
   const [load, setLoad] = useState([false, false]);
@@ -34,14 +37,57 @@ const Scena1 = ({ setTimer }) => {
     };
   }, []);
 
+  const [noAudioPermission, setNoAudioPermission] = useState(false);
+  const [playedPergamena, setPlayedPergamena] = useState(false);
+
   useEffect(() => {
-    if(scene == 1 && load[1]) {
-      const audio = new Audio(aperturaPergamena);
-      audio.play().catch((error) => {
-        console.error("Errore durante la riproduzione del suono:", error);
+    if (scene === 1 && load[1] && !playedPergamena && !noAudioPermission) {
+      const sound = new Howl({
+      src: [aperturaPergamena],
+      volume: 1,
+      html5: true,
+      onplayerror: () => {
+        setNoAudioPermission(true);
+      },
+      onloaderror: () => {
+        setNoAudioPermission(true);
+      },
+      onend: () => {
+        sound.unload();
+      }
       });
+      try {
+      sound.play();
+      setPlayedPergamena(true);
+      } catch {
+      setNoAudioPermission(true);
+      }
     }
-  }, [scene, load]);
+
+    let bgm;
+    if (scene >= 2) {
+      if (!window.__scena1_bgm) {
+      bgm = new Howl({
+        src: [runningScene],
+        volume: 0.2,
+        loop: true,
+        html5: true,
+      });
+      bgm.play();
+      window.__scena1_bgm = bgm;
+      }
+      if (noAudioPermission) {
+      setNoAudioPermission(false);
+      }
+    } else {
+      if (window.__scena1_bgm) {
+      window.__scena1_bgm.stop();
+      window.__scena1_bgm.unload();
+      window.__scena1_bgm = null;
+      }
+    }
+
+  }, [scene, load, playedPergamena, noAudioPermission]);
 
   const dialogues = [
     {
@@ -120,6 +166,12 @@ const Scena1 = ({ setTimer }) => {
         ]}
         onChange={() => {
           navigate("/scena2");
+          if (window.__scena1_bgm) {
+            window.__scena1_bgm.stop();
+            window.__scena1_bgm.unload();
+            window.__scena1_bgm = null;
+          }
+          Howler.stop();
         }}
         isMulti={false}
         onLoad={() => setLoad((prev) => [prev[0], true])}
@@ -139,6 +191,12 @@ const Scena1 = ({ setTimer }) => {
         <Button
           classes="absolute bottom-2 right-4"
           onClick={() => {
+            const sound = new Howl({
+              src: [pop],
+              volume: 1,
+              html5: true,
+            });
+            sound.play();
             setScene(2);
           }}
         >
@@ -175,6 +233,33 @@ const Scena1 = ({ setTimer }) => {
               }}
             />
           )
+      )}
+       {noAudioPermission && (
+        <Button
+          classes="absolute bottom-2 left-2"
+          onClick={() => {
+            setNoAudioPermission(false);
+          }}>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-16 text-black"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 5.25L6.75 9H4.5a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h2.25l4.5 3.75V5.25z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.25 8.25a6.75 6.75 0 010 9.5m2.25-11.75a9.75 9.75 0 010 13.75"
+                />
+              </svg>
+          </Button>
       )}
     </section>
   );

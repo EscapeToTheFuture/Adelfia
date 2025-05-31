@@ -1,12 +1,56 @@
 import { useEffect, useState } from "react";
-import Button from "@components/Button";
+import { Howl } from "howler";
 import { useLocation, useNavigate } from "react-router";
+import alarm from "@assets/sounds/alarm.mp3";
+import pop from "@assets/sounds/pop.mp3";
+import orologio from "@assets/sounds/orologio.mp3";
 
 const Timer = ({ startTime, setStartTime }) => {
   const [timer, setTimer] = useState(parseInt(localStorage.getItem("saved_timer"), 10) || 10 * 60); // 10 minuti
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
   const location = useLocation();
+
+  const [sound, setSound] = useState(null);
+
+  useEffect(() => {
+    if (startTime) {
+      const newSound = new Howl({
+        src: [orologio],
+        volume: 0.3,
+        html5: true,
+        loop: true,
+        onplayerror: () => {
+          console.error("Errore durante la riproduzione del suono dell'orologio.");
+        },
+        onloaderror: () => {
+          console.error("Errore durante il caricamento del suono dell'orologio.");
+        },
+      });
+      setSound(newSound);
+      newSound.play();
+      return () => {
+        newSound.stop();
+        newSound.unload();
+      };
+    } else if (sound) {
+      sound.stop();
+      sound.unload();
+      setSound(null);
+    }
+  }, [location, startTime]);
+
+  useEffect(() => {
+    if (startTime && timer % 60 === 0 && timer !== 0) {
+      const alarmSound = new Howl({
+        src: [alarm],
+        volume: 0.7,
+        html5: true,
+      });
+      alarmSound.play();
+    }
+  }, [timer, startTime]);
+
 
   useEffect(() => {
     if (!startTime) return;

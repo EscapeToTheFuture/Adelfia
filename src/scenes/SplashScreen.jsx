@@ -23,6 +23,12 @@ const SplashScreen = ({ title, location }) => {
     };
   }, [hasRequestedFullscreen]);
 
+  useEffect(() => {
+    if (window.Howler && typeof window.Howler.stop === "function") {
+      window.Howler.stop();
+    }
+  }, []);
+
   return (
     <div
       className="w-full flex flex-col items-center justify-center gap-2 md:gap-10 h-svh bg-center bg-clip-border bg-cover bg-origin-border bg-no-repeat gap-auto"
@@ -37,28 +43,7 @@ const SplashScreen = ({ title, location }) => {
         <h3 className="font-elite text-3xl md:text-3xl xl:text-6xl z-1 text-white select-none">
           {location}
         </h3>
-        {/* <img
-          onClick={async () => {
-            if (!playing["bubbles"].playing) {
-              const bubbles = playing["bubbles"].player;
-              bubbles.play();
-              setPlaying((prev) => ({
-                ...prev,
-                bubbles: { ...prev["bubbles"], playing: true },
-              }));
-              setTimeout(() => {
-                bubbles.pause();
-                setPlaying((prev) => ({
-                  ...prev,
-                  bubbles: { ...prev["bubbles"], playing: false },
-                }));
-              }, 3000);
-            }
-          }}
-          src={ampolla}
-          alt="ampolla"
-          className="select-none h-10 xl:h-16 z-1 transition-transform duration-300 ease-in-out transform hover:scale-120 animate-shake"
-        /> */}
+        
       </div>
       <Button
         onClick={async () => {

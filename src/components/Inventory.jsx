@@ -5,6 +5,10 @@ import terra from "@assets/images/oggetti/terra.png";
 import acqua from "@assets/images/oggetti/acqua.png";
 import mattoni from "@assets/images/oggetti/mattoni.png";
 import confetti from "canvas-confetti";
+import {Howl} from "howler";
+import rewardSound from "@assets/sounds/reward.mp3";
+import prendiOggetto from "@assets/sounds/prendiOggetto.mp3";
+import apriInventario from "@assets/sounds/apriInventario.mp3";
 
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -45,6 +49,25 @@ const Inventory = () => {
   }, []);
 
   useEffect(() => {
+    if (inventory.length > 0) {
+      const sound = new Howl({
+        src: [prendiOggetto],
+        volume: 0.5,
+      });
+      sound.play();
+    }
+  }, [inventory]);
+  useEffect(() => {
+    if (open) {
+      const sound = new Howl({
+        src: [apriInventario],
+        volume: 0.5,
+      });
+      sound.play();
+    }
+  }, [open]);
+
+  useEffect(() => {
     if (points == 5) {
       window.location.hash = "/win";
     }
@@ -65,6 +88,11 @@ const Inventory = () => {
         decay: 0.92,
         startVelocity: 20,
       });
+      const sound = new Howl({
+        src: [rewardSound],
+        volume: 0.5,
+      });
+      sound.play();
     }
   }, [points]);
 
@@ -105,15 +133,14 @@ const Inventory = () => {
         {inventory.length > 0 && !open && (
           <button
             onClick={() => setOpen(true)}
-            className="z-10 py-2 px-2 md:py-4 md:px-4 font-elite hover:-rotate-5 hover:scale-110 duration-600 transition-transform bg-gray-300 rounded-2xl"
+            className="z-10 py-2 px-2 md:py-4 md:px-4 font-elite hover:-rotate-5 hover:scale-110 duration-600 transition-transform bg-[rgba(21,93,252,.76)] rounded-2xl"
           >
             <div className="flex gap-2 items-center justify-center text-sm md:text-xl">
               <img
                 src={inventoryIcon}
                 alt="Inventario"
-                width={window.innerWidth < 800 ? 60 : 80}
+                width={window.innerWidth < 1200 ? 60 : 80}
               />
-              {window.innerWidth > 800 && "Inventario"}
             </div>
           </button>
         )}
