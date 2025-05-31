@@ -17,45 +17,54 @@ const Inventory = () => {
   );
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const handleStorageChange = () => {
+  const handleStorageChange = () => {
       setInventory(JSON.parse(localStorage.getItem("inventory")) || []);
       setPoints(JSON.parse(localStorage.getItem("points")) || 0);
     };
 
-    // Custom event for same-tab updates
-    const customEventName = "inventoryUpdate";
+useEffect(() => {
+  // Custom event for same-tab updates
+  const customEventName = "inventoryUpdate";
 
-    window.addEventListener(customEventName, handleStorageChange);
+  window.addEventListener(customEventName, handleStorageChange);
 
-    // Patch localStorage.setItem to dispatch custom event (in modo asincrono)
-    const originalSetItem = localStorage.setItem;
-    localStorage.setItem = function (key, value) {
-      originalSetItem.apply(this, arguments);
-      if (key === "inventory" || key === "points") {
-        setTimeout(() => {
-          window.dispatchEvent(new Event(customEventName));
-        }, 0);
-      }
-    };
+  // Patch localStorage.setItem to dispatch custom event (in modo asincrono)
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function (key, value) {
+    originalSetItem.apply(this, arguments);
+    if (key === "inventory" || key === "points") {
+      setTimeout(() => {
+        window.dispatchEvent(new Event(customEventName));
+      }, 0);
+    }
+  };
 
-    // Initial load
+  // Initial load
+  handleStorageChange();
+
+  // Fallback polling for iOS/PWA where events may not fire
+  const interval = setInterval(() => {
     handleStorageChange();
+  }, 1000);
 
-    return () => {
-      window.removeEventListener(customEventName, handleStorageChange);
-      localStorage.setItem = originalSetItem;
-    };
-  }, []);
+  return () => {
+    window.removeEventListener(customEventName, handleStorageChange);
+    localStorage.setItem = originalSetItem;
+    clearInterval(interval);
+  };
+}, []);
+  
 
+  const [prevInventoryLength, setPrevInventoryLength] = useState(0);
   useEffect(() => {
-    if (inventory.length > 0) {
+    if (inventory.length > prevInventoryLength) {
       const sound = new Howl({
         src: [prendiOggetto],
         volume: 0.5,
       });
       sound.play();
     }
+    setPrevInventoryLength(inventory.length);
   }, [inventory]);
   useEffect(() => {
     if (open) {
@@ -151,7 +160,7 @@ const Inventory = () => {
           className="z-120 absolute top-0 left-0 w-full h-full flex items-center justify-center"
           style={{ background: "rgba(0,0,0,0.4)" }}
         >
-          <div className="w-1/3 h-1/3 bg-gray-800 text-white p-2 flex flex-col items-center justify-center rounded-2xl shadow-lg">
+          <div className="w-xl h-[20rem] lg:w-1/3 lg:h-1/3 bg-gray-800 text-white p-2 flex flex-col items-center justify-center rounded-2xl shadow-lg">
             <h2 className="text-4xl font-elite pb-3 underline">Inventario</h2>
             <h2 className="text-2xl font-elite pb-4">Punti: {points}/5</h2>
             <div className="flex flex-row">
