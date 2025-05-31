@@ -12,7 +12,7 @@ export default defineConfig({
     VitePWA({
       manifest: {
         "name": "La faida tra Montrone e Canneto",
-        "short_name": "Montrone vs Canneto",
+        "short_name": "Salva Adelfia",
         "description": "Un antico villaggio è minacciato da un imminente attacco. La Torre di Canneto, deve essere messa in sicurezza prima del calare della notte.",
         "start_url": "/Adelfia/",
         "display": "fullscreen",
