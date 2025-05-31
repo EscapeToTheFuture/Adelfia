@@ -193,6 +193,7 @@ const Scena4 = () => {
     }
   }, [load, noAudioPermission]);
 
+   const windowHeight = window.innerHeight;
   const imgWidth = 1920;
   const imgHeight = 1080;
   const scaledWidth = Math.round((windowHeight / imgHeight) * imgWidth);
